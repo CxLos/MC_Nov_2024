@@ -1,1 +1,1 @@
-web: gunicorn mc_oct_2024:server
+web: gunicorn mc_nov_2024:server
