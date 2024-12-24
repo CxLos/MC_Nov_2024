@@ -209,6 +209,7 @@ purpose_table.update_layout(
 # ============================== Dash Application ========================== #
 
 app = dash.Dash(__name__)
+server= app.server
 
 app.layout = html.Div(children=[ 
     html.Div(className='divv', children=[ 
