@@ -98,14 +98,9 @@ df['Please explain event-oriented:'] = df['Please explain event-oriented:'].fill
 
 # print(df.dtypes)
 
-# -----------------------------------------------------------------------------
-
-# Get the distinct values in column
-
-# distinct_service = df['What service did/did not complete?'].unique()
-# print('Distinct:\n', distinct_service)
-
 # ========================= Filtered DataFrames ========================== #
+
+marcom_events = len(df)
 
 # Group by "Which MarCom activity category are you submitting an entry for?"
 df_activities = df.groupby('MarCom Activity').size().reset_index(name='Count')
@@ -116,6 +111,25 @@ df_purpose = df.groupby('Purpose').size().reset_index(name='Count')
 
 # Product Type dataframe:
 df_product_type = df.groupby('Product Type').size().reset_index(name='Count')
+
+# "Activity Duration" dataframe:
+# Remove the word 'hours' from the 'Activity duration:' column
+df['Activity duration:'] = df['Activity duration:'].str.replace(' hours', '')
+df['Activity duration:'] = df['Activity duration:'].str.replace(' hour', '')
+df['Activity duration:'] = pd.to_numeric(df['Activity duration:'], errors='coerce')
+
+df_activity_duration = df.groupby('Activity duration:').size().reset_index(name='Count')
+sum_activity_duration = df['Activity duration:'].sum()
+# print('Total Activity Duration:', sum_activity_duration, 'hours')
+
+# "Person completing this form:" dataframe:
+df['Person completing this form:'] = df['Person completing this form:'].str.strip()
+df['Person completing this form:'] = df['Person completing this form:'].replace('Felicia Chanlder', 'Felicia Chandler')
+df_person = df.groupby('Person completing this form:').size().reset_index(name='Count')
+# print(df_person.value_counts())
+
+# "Activity Status" dataframe:
+df_activity_status = df.groupby('Activity Status').size().reset_index(name='Count')
 
 # # ========================== DataFrame Table ========================== #
 
@@ -218,29 +232,29 @@ app.layout = html.Div(children=[
     ]),    
 
 # Data Table
-html.Div(
-    className='row0',
-    children=[
-        html.Div(
-            className='table',
-            children=[
-                html.H1(
-                    className='table-title',
-                    children='Data Table'
-                )
-            ]
-        ),
-        html.Div(
-            className='table2', 
-            children=[
-                dcc.Graph(
-                    className='data',
-                    figure=marcom_table
-                )
-            ]
-        )
-    ]
-),
+# html.Div(
+#     className='row0',
+#     children=[
+#         html.Div(
+#             className='table',
+#             children=[
+#                 html.H1(
+#                     className='table-title',
+#                     children='Data Table'
+#                 )
+#             ]
+#         ),
+#         html.Div(
+#             className='table2', 
+#             children=[
+#                 dcc.Graph(
+#                     className='data',
+#                     figure=marcom_table
+#                 )
+#             ]
+#         )
+#     ]
+# ),
 
 # ROW 1
 html.Div(
@@ -258,7 +272,7 @@ html.Div(
                 children=[
                     html.H1(
                         className='high2',
-                        children=['137']
+                        children=[marcom_events]
                     ),
                 ],
             ),
@@ -287,7 +301,7 @@ html.Div(
                     )
                 ).update_traces(
                     textposition='auto',
-                    hovertemplate='<b>Activity</b>: %{x}<br><b>Count</b>: %{y}<extra></extra>'
+                    hovertemplate='<b>%{x}</b><br><b>Count</b>: %{y}<extra></extra>'
                 )
             )
             ],
@@ -324,7 +338,8 @@ html.Div(
         ),
         html.Div(
             className='graph4',
-            children=[                html.Div(
+            children=[                
+              html.Div(
                     className='table',
                     children=[
                         html.H1(
@@ -343,6 +358,102 @@ html.Div(
                     ]
                 )
    
+            ]
+        )
+    ]
+),
+
+# ROW 3
+html.Div(
+    className='row2',
+    children=[
+        html.Div(
+            className='graph1',
+            children=[
+            html.Div(
+                className='high1',
+                children=['Total Marketing Hours:']
+            ),
+            html.Div(
+                className='highs-activity',
+                children=[
+                    html.H1(
+                        className='high2',
+                        children=[sum_activity_duration]
+                    ),
+                ],
+            ),
+            ]
+        ),
+        html.Div(
+            className='graph4',
+            children=[                
+                # Person completing this form: bar chart
+                dcc.Graph(
+                    figure=px.bar(
+                        df_person,
+                        x='Person completing this form:',
+                        y='Count',
+                        color='Person completing this form:',
+                        text='Count'
+                    ).update_layout(
+                        title='Person Completing Form',
+                        xaxis_title='Person',
+                        yaxis_title='Count',
+                        title_x=0.5,
+                        font=dict(
+                            family='Calibri',
+                            size=17,
+                            color='black'
+                        )
+                    ).update_traces(
+                        textposition='auto',
+                        hovertemplate='<b>%{x}</b><br><b>Count</b>: %{y}<extra></extra>'
+                    )
+                )
+            ]
+        )
+    ]
+),
+
+# ROW 4
+html.Div(
+    className='row2',
+    children=[
+        html.Div(
+            className='graph1',
+            children=[
+                # 'Activity Status' pie chart
+                dcc.Graph(
+                    figure=px.pie(
+                        df_activity_status,
+                        values='Count',
+                        names='Activity Status',
+                        color='Activity Status',
+                    ).update_layout(
+                        title='Activity Status',
+                        title_x=0.5,
+                        font=dict(
+                            family='Calibri',
+                            size=17,
+                            color='black'
+                        )
+                    ).update_traces(
+                        textposition='inside',
+                        textinfo='percent+label',
+                        hoverinfo='label+percent',
+                        hole=0.3
+                    )
+                )
+            ]
+        ),
+        html.Div(
+            className='graph4',
+            children=[                
+                # Person completing this form: bar chart
+                dcc.Graph(
+
+                )
             ]
         )
     ]
