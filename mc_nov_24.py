@@ -225,10 +225,27 @@ purpose_table.update_layout(
 app = dash.Dash(__name__)
 server= app.server
 
-app.layout = html.Div(children=[ 
-    html.Div(className='divv', children=[ 
-        html.H1('MarCom Report November 2024', className='title'),
-        html.A('Repo', href='https://github.com/CxLos/MC_Nov_2024', className='btn')
+app.layout = html.Div(
+    children=[ 
+    html.Div(
+        className='divv', 
+        children=[ 
+        html.H1(
+            'MarCom Report November 2024', 
+            className='title'),
+
+                    html.Div(
+            className='btn-box', 
+            children=[
+                html.A(
+                'Home Page',
+                href='https://landing-page-nov-2024.onrender.com',
+                className='btn'),
+                html.A(
+                'Repo',
+                href='https://github.com/CxLos/MC_Nov_2024',
+                className='btn'),
+            ]),
     ]),    
 
 # Data Table

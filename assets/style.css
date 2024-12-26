@@ -22,10 +22,17 @@
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+.btn-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0px auto;
+}
+
 .btn {
   display: inline-block;
   text-align: center;
-  margin: 15px auto;
+  margin: 50px 15px 15px 15px;
   color:black;
   background-color: lightgray;
   border: 2px solid black;
