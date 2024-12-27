@@ -282,7 +282,7 @@ html.Div(
             children=[
             html.Div(
                 className='high1',
-                children=['Marketing Events:']
+                children=['MarCom Events:']
             ),
             html.Div(
                 className='highs-activity',
@@ -389,7 +389,7 @@ html.Div(
             children=[
             html.Div(
                 className='high1',
-                children=['Total Marketing Hours:']
+                children=['Total MarCom Hours:']
             ),
             html.Div(
                 className='highs-activity',
