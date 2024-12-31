@@ -125,6 +125,7 @@ sum_activity_duration = df['Activity duration:'].sum()
 # "Person completing this form:" dataframe:
 df['Person completing this form:'] = df['Person completing this form:'].str.strip()
 df['Person completing this form:'] = df['Person completing this form:'].replace('Felicia Chanlder', 'Felicia Chandler')
+df['Person completing this form:'] = df['Person completing this form:'].replace('Felicia Banks', 'Felicia Chandler')
 df_person = df.groupby('Person completing this form:').size().reset_index(name='Count')
 # print(df_person.value_counts())
 
@@ -273,139 +274,83 @@ app.layout = html.Div(
 #     ]
 # ),
 
-# ROW 1
+# ROW 1: MarCom Events and MarCom Hours
 html.Div(
     className='row1',
     children=[
         html.Div(
-            className='graph1',
+            className='graph11',
             children=[
-            html.Div(
-                className='high1',
-                children=['MarCom Events:']
-            ),
-            html.Div(
-                className='highs-activity',
-                children=[
-                    html.H1(
-                        className='high2',
-                        children=[marcom_events]
-                    ),
-                ],
-            ),
+                html.Div(
+                    className='high1',
+                    children=['MarCom Events:']
+                ),
+                html.Div(
+                    className='highs-activity',
+                    children=[
+                        html.H1(
+                            className='high2',
+                            children=[marcom_events]
+                        )
+                    ]
+                )
             ]
         ),
         html.Div(
-            className='graph2',
+            className='graph22',
             children=[
-            # 'Which MarCom activity category are you submitting an entry for?' bar chart
-            dcc.Graph(
-                figure=px.bar(
-                    df_activities,
-                    x='MarCom Activity',
-                    y='Count',
-                    color='MarCom Activity',
-                    text='Count'
-                ).update_layout(
-                    title='MarCom Activity Categories',
-                    xaxis_title='Activity',
-                    yaxis_title='Count',
-                    title_x=0.5,
-                    font=dict(
-                        family='Calibri',
-                        size=17,
-                        color='black'
-                    )
-                ).update_traces(
-                    textposition='auto',
-                    hovertemplate='<b>%{x}</b><br><b>Count</b>: %{y}<extra></extra>'
+                html.Div(
+                    className='high1',
+                    children=['Total MarCom Hours:']
+                ),
+                html.Div(
+                    className='highs-activity',
+                    children=[
+                        html.H1(
+                            className='high2',
+                            children=[sum_activity_duration]
+                        )
+                    ]
                 )
-            )
-            ],
+            ]
         )
     ]
 ),
 
-# ROW 2
+# ROW 2: MarCom Activity Categories and Person Completing the Form
 html.Div(
     className='row2',
     children=[
         html.Div(
             className='graph3',
             children=[
-                html.Div(
-                    className='table',
-                    children=[
-                        html.H1(
-                            className='table-title',
-                            children='Products Table'
+                dcc.Graph(
+                    figure=px.bar(
+                        df_activities,
+                        x='MarCom Activity',
+                        y='Count',
+                        color='MarCom Activity',
+                        text='Count'
+                    ).update_layout(
+                        title='MarCom Activity Categories',
+                        xaxis_title='Activity',
+                        yaxis_title='Count',
+                        title_x=0.5,
+                        font=dict(
+                            family='Calibri',
+                            size=17,
+                            color='black'
                         )
-                    ]
-                ),
-                html.Div(
-                    className='table2', 
-                    children=[
-                        dcc.Graph(
-                            className='data',
-                            figure=products_table
-                        )
-                    ]
+                    ).update_traces(
+                        textposition='auto',
+                        hovertemplate='<b>%{x}</b><br><b>Count</b>: %{y}<extra></extra>'
+                    )
                 )
             ]
         ),
         html.Div(
             className='graph4',
-            children=[                
-              html.Div(
-                    className='table',
-                    children=[
-                        html.H1(
-                            className='table-title',
-                            children='Purpose Table'
-                        )
-                    ]
-                ),
-                html.Div(
-                    className='table2', 
-                    children=[
-                        dcc.Graph(
-                            className='data',
-                            figure=purpose_table
-                        )
-                    ]
-                )
-   
-            ]
-        )
-    ]
-),
-
-# ROW 3
-html.Div(
-    className='row2',
-    children=[
-        html.Div(
-            className='graph1',
             children=[
-            html.Div(
-                className='high1',
-                children=['Total MarCom Hours:']
-            ),
-            html.Div(
-                className='highs-activity',
-                children=[
-                    html.H1(
-                        className='high2',
-                        children=[sum_activity_duration]
-                    ),
-                ],
-            ),
-            ]
-        ),
-        html.Div(
-            className='graph4',
-            children=[                
-                # Person completing this form: bar chart
                 dcc.Graph(
                     figure=px.bar(
                         df_person,
@@ -433,14 +378,13 @@ html.Div(
     ]
 ),
 
-# ROW 4
+# ROW 3: Activity Status and Products Table
 html.Div(
     className='row2',
     children=[
         html.Div(
-            className='graph1',
+            className='graph3',
             children=[
-                # 'Activity Status' pie chart
                 dcc.Graph(
                     figure=px.pie(
                         df_activity_status,
@@ -466,15 +410,62 @@ html.Div(
         ),
         html.Div(
             className='graph4',
-            children=[                
-                # Person completing this form: bar chart
-                dcc.Graph(
-
+            children=[
+                html.Div(
+                    className='table',
+                    children=[
+                        html.H1(
+                            className='table-title',
+                            children='Products Table'
+                        )
+                    ]
+                ),
+                html.Div(
+                    className='table2',
+                    children=[
+                        dcc.Graph(
+                            className='data',
+                            figure=products_table
+                        )
+                    ]
                 )
             ]
         )
     ]
 ),
+
+# ROW 4: Purpose Table
+html.Div(
+    className='row2',
+    children=[
+        html.Div(
+            className='graph3',
+            children=[
+                html.Div(
+                    className='table',
+                    children=[
+                        html.H1(
+                            className='table-title',
+                            children='Purpose Table'
+                        )
+                    ]
+                ),
+                html.Div(
+                    className='table2',
+                    children=[
+                        dcc.Graph(
+                            className='data',
+                            figure=purpose_table
+                        )
+                    ]
+                )
+            ]
+        ),
+        # Placeholder for additional content or future expansion
+        html.Div(className='graph4', children=[])
+    ]
+),
+
 ])
 
 print(f"Serving Flask app '{current_file}'! 🚀")

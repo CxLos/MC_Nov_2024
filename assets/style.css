@@ -77,6 +77,16 @@
   justify-content: center;
   text-align: center;
 }
+
+.row11 {
+  margin:20px 0px 0px 10px;
+  padding:0px 0px 20px 0px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+}
+
 .row2 {
   margin:0px 0px 0px 10px;
   display:flex;
@@ -300,4 +310,20 @@
   border: 15px solid rgb(255, 235, 55);
   border-radius: 100px;
   background-color: rgb(255, 250, 202);
+}
+
+.graph11 {
+  border-right: 2px solid rgb(186, 186, 186);
+  border-bottom: 2px solid rgb(186, 186, 186);
+  margin: 0px;
+  padding: 0px 20px 40px 0px;
+  width: 48%;
+}
+
+.graph22 {
+  /* border-left: 2px solid gray; */
+  border-bottom: 2px solid rgb(186, 186, 186);
+  margin: 0px;
+  padding: 10px 0px 40px 30px;
+  width: 48%;
 }
